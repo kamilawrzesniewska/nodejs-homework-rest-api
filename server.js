@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 
 require("dotenv").config();
 
-const contactsRouter = require("./api/index");
+const indexRouter = require("./routes/api/index");
 
 const app = express();
 
