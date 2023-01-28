@@ -15,7 +15,10 @@ app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
 
-app.use("/api", contactsRouter);
+require("./config/passport");
+
+app.use("/api", indexRouter);
+
 
 app.use((req, res) => {
 	res.status(404).json({
@@ -42,6 +45,19 @@ const connection = mongoose.connect(uriDb, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
 });
+
+connection
+	.then(() => {
+		app.listen(PORT, () => {
+			console.log(
+				`Database connection successful. Use our API on port: ${PORT}`
+			);
+		});
+	})
+	.catch((err) => {
+		console.log(`Server not running. Error message: ${err.message}`);
+		process.exit(1);
+	});
 
 app.listen(3000, () => {
   console.log("Server running. Use our API on port: 3000")
