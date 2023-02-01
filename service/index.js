@@ -3,7 +3,17 @@ const {
 } = require("mongoose");
 const Contact = require("./schemas/contact");
 
-const getAllContacts = async () => Contact.find({}).lean();
+const getAllContacts = async (id, page, limit, favorite) => {
+	if (favorite === undefined) {
+		return await Contact.find({ owner: id })
+			.limit(limit * 1)
+			.skip((page - 1) * limit);
+	}
+	return await Contact.find({ owner: id, favorite })
+		.limit(limit * 1)
+		.skip((page - 1) * limit);
+};
+
 const getOneContact = async (contactId) => {
 	let objectIdContactId;
 	try {
@@ -14,7 +24,8 @@ const getOneContact = async (contactId) => {
 	return Contact.findOne({ _id: objectIdContactId }).lean();
 };
 
-const createContact = async (body) => Contact.create(body);
+const createContact = async (body, id) =>
+	Contact.create({ ...body, owner: id });
 
 const deleteContact = async (contactId) => {
 	let objectIdContactId;

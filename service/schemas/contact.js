@@ -19,8 +19,12 @@ const contact = new Schema(
 			type: Boolean,
 			default: false,
 		},
+		owner: {
+			type: Schema.Types.ObjectId,
+			ref: "users",
+		},
 	},
-	{ versionKey: false, timestamps: true, strict: "throw" }
+	{ versionKey: false, timestamps: true}
 );
 
 const Contact = model("contact", contact);
