@@ -147,4 +147,5 @@ module.exports = {
 	logout,
 	getCurrent,
 	patchSubscription,
+	patchAvatar,
 };
