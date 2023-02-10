@@ -1,10 +1,12 @@
 const User = require("./schemas/user");
+const gravatar = require("gravatar");
 
 const findUserByEmail = async (email) => await User.findOne({ email });
 
 const createNewUser = async (body) => {
 	const { email, password } = body;
-	const newUser = new User({ email });
+	const avatarURL = gravatar.url(email);
+	
 	await newUser.setPassword(password);
 	await newUser.save();
 	return newUser;
