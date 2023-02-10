@@ -4,7 +4,6 @@ const app = require("../app");
 require("dotenv").config();
 const { DB_URI } = process.env;
 
-
 beforeAll(async () => {
 	await mongoose.connect(DB_URI, {
 		useNewUrlParser: true,
