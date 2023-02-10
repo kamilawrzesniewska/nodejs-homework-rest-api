@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const request = require("supertest");
 const app = require("../app");
+require("dotenv").config();
+const { DB_URI } = process.env;
 
 
 beforeAll(async () => {
@@ -26,4 +28,8 @@ describe("test login", () => {
 		expect(typeof response.body.user.email).toBe("string");
 		expect(typeof response.body.user.subscription).toBe("string");
 	});
+});
+
+afterAll(async () => {
+	await mongoose.connection.close();
 });
