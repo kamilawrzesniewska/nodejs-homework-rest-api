@@ -1,3 +1,9 @@
+const express = require("express");
+const router = express.Router();
+const contactController = require("../../controller/index");
+const validate = require("../../middlewares/contactsValidation");
+const authMiddleware = require("../../middlewares/jwt");
+
 router.get("/", authMiddleware, contactController.get);
 router.get("/:contactId", contactController.getOne);
 router.post(
@@ -14,3 +20,6 @@ router.patch(
 	validate.updateStatusContact,
 	contactController.patchFavorite
 );
+
+module.exports = router;
+
