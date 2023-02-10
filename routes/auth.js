@@ -1,3 +1,10 @@
+const express = require("express");
+const router = express.Router();
+const userController = require("../../controller/auth");
+const validate = require("../../middlewares/usersValidation");
+const authMiddleware = require("../../middlewares/jwt");
+const multer = require("multer");
+
 const storage = multer.diskStorage({
 	destination: "tmp/",
 	filename: (req, file, cb) => cb(null, file.originalname),
@@ -21,3 +28,22 @@ const multerInstance = multer({
 		return cb(null, true);
 	},
 });
+
+router.post("/signup", validate.findUserByEmail, userController.register);
+router.post("/login", validate.findUserByEmail, userController.login);
+router.get("/logout", authMiddleware, userController.logout);
+router.get("/current", authMiddleware, userController.getCurrent);
+router.patch(
+	"/",
+	authMiddleware,
+	validate.patchSubscription,
+	userController.patchSubscription
+);
+router.patch(
+	"/avatars",
+	authMiddleware,
+	multerInstance.single("avatar"),
+	userController.patchAvatar
+);
+
+module.exports = router;
