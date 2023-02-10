@@ -26,14 +26,3 @@ const user = new Schema(
 	{ versionKey: false, timestamps: true, strict: "throw" }
 );
 
-user.methods.setPassword = function (password) {
-	this.password = bCrypt.hashSync(password, bCrypt.genSaltSync(6));
-};
-
-user.methods.validatePassword = function (password) {
-	return bCrypt.compareSync(password, this.password);
-};
-
-const User = model("user", user);
-
-module.exports = User;
