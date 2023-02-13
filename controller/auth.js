@@ -20,7 +20,7 @@ const register = async (req, res, next) => {
 		res.status(201).json({
 			status: "created",
 			code: 201,
-			message: "Registration successful",
+			message: "Registration successful. We have sent a verification email. Please verify your email address before logging in.",
 			user: {
 				email: newUser.email,
 				subscription: newUser.subscription,
@@ -36,13 +36,21 @@ const login = async (req, res, next) => {
 	try {
 		const user = await service.findUserByEmail(email);
 		const isPasswordCorrect = await service.passwordValidation(email, password);
+		const isEmailVerified = await service.emailVerification(email);
 		if (!user || !isPasswordCorrect) {
 			return res.status(401).json({
 				status: "Unauthorized",
 				code: 401,
 				message: "Email or password is wrong",
 			});
+		} else if (!isEmailVerified) {
+			return res.status(401).json({
+				status: "Unauthorized",
+				code: 401,
+				message: "Please verify Your account first",
+			});
 		}
+		
 		const { id, subscription } = user;
 		const payload = {
 			id,
