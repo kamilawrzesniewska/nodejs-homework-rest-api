@@ -29,3 +29,26 @@ const emailBody = (email, verificationToken) => {
 		},
 	};
 };
+
+const emailConfig = (email, verificationToken) => {
+	const body = mailGenerator.generate(emailBody(email, verificationToken));
+	return {
+		to: { email },
+		from: "kamka@gmail.com",
+        subject: "Contacts App - Email verification",
+		html: body,
+	};
+};
+
+const sendEmail = (email, verificationToken) => {
+	sgMail
+		.send(emailConfig(email, verificationToken))
+		.then((res) => {
+			console.log(res);
+		})
+		.catch((error) => {
+			console.error(error);
+		});
+};
+
+module.exports = { sendEmail };
