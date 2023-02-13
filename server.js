@@ -14,7 +14,7 @@ connection
 	.then(() => {
 		app.listen(PORT, () => {
 			console.log(
-				`Database connection successful. Use our API on port: ${PORT}`
+				`Database connection successful. Use our API on portt: ${PORT}`
 			);
 		});
 	})

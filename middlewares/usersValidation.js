@@ -14,6 +14,15 @@ const schemaPatchSubscription = Joi.object({
 	subscription: Joi.string().valid("starter", "pro", "business").required(),
 });
 
+const schemaVerifyEmail = Joi.object({
+	email: Joi.string()
+		.email({
+			minDomainSegments: 2,
+			tlds: { allow: ["com", "net", "pl"] },
+		})
+		.required(),
+});
+
 const validate = (schema, obj, next, res) => {
 	const { error } = schema.validate(obj);
 	if (error) {
@@ -34,4 +43,8 @@ module.exports.findUserByEmail = (req, res, next) => {
 
 module.exports.patchSubscription = (req, res, next) => {
 	return validate(schemaPatchSubscription, req.body, next, res);
+};
+
+module.exports.verifyEmail = (req, res, next) => {
+	return validate(schemaVerifyEmail, req.body, next, res);
 };
