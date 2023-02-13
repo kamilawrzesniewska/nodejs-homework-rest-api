@@ -44,3 +44,7 @@ module.exports.findUserByEmail = (req, res, next) => {
 module.exports.patchSubscription = (req, res, next) => {
 	return validate(schemaPatchSubscription, req.body, next, res);
 };
+
+module.exports.verifyEmail = (req, res, next) => {
+	return validate(schemaVerifyEmail, req.body, next, res);
+};
