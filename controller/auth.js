@@ -50,7 +50,7 @@ const login = async (req, res, next) => {
 				message: "Please verify Your account first",
 			});
 		}
-		
+
 		const { id, subscription } = user;
 		const payload = {
 			id,
@@ -148,6 +148,29 @@ const patchAvatar = async (req, res, next) => {
 		next(error);
 	}
 };
+
+const verifyEmail = async (req, res, next) => {
+	const { verificationToken } = req.params;
+	try {
+		const user = await service.updateVerificationToken(verificationToken);
+		if (user) {
+			res.status(200).json({
+				status: "success",
+				code: 200,
+				message: "Verification succesful",
+			});
+		} else {
+			res.status(404).json({
+				status: "error",
+				code: 404,
+				message: `User not found`,
+			});
+		}
+	} catch (error) {
+		next(error);
+	}
+};
+
 
 module.exports = {
 	register,
