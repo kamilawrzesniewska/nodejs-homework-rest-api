@@ -39,6 +39,16 @@ const updateVerificationToken = (verificationToken) =>
 		{ verify: true, verificationToken: null }
 	);
 
+	const emailVerification = async (email) => {
+		const user = await findUserByEmail(email);
+		return user ? user.verify : false;
+	};
+	
+	const resendVerification = async (email) => {
+		const user = await findUserByEmail(email);
+		await sendEmail(email, user.verificationToken);
+	};
+
 module.exports = {
 	findUserByEmail,
 	createNewUser,
@@ -47,4 +57,7 @@ module.exports = {
 	userLogout,
 	updateSubscription,
 	updateAvatar,
+	updateVerificationToken,
+	emailVerification,
+	resendVerification,
 };
