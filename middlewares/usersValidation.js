@@ -14,6 +14,15 @@ const schemaPatchSubscription = Joi.object({
 	subscription: Joi.string().valid("starter", "pro", "business").required(),
 });
 
+const schemaVerifyEmail = Joi.object({
+	email: Joi.string()
+		.email({
+			minDomainSegments: 2,
+			tlds: { allow: ["com", "net", "pl"] },
+		})
+		.required(),
+});
+
 const validate = (schema, obj, next, res) => {
 	const { error } = schema.validate(obj);
 	if (error) {
