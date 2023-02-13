@@ -171,6 +171,38 @@ const verifyEmail = async (req, res, next) => {
 	}
 };
 
+const resendVerificationEmail = async (req, res, next) => {
+	const { email } = req.body;
+	try {
+		const user = await service.findUserByEmail(email);
+		const isEmailVerified = await service.emailVerification(email);
+		if (!user) {
+			res.status(404).json({
+				status: "error",
+				code: 404,
+				message: `User not found`,
+				data: "Not Found",
+			});
+		} else if (!isEmailVerified) {
+			service.resendVerification(email);
+			res.status(200).json({
+				status: "success",
+				code: 200,
+				message: "Verification email sent",
+				data: "OK",
+			});
+		} else {
+			res.status(400).json({
+				status: "error",
+				code: 400,
+				message: "Verification has already been passed",
+				data: "Bad request",
+			});
+		}
+	} catch (error) {
+		next(error);
+	}
+};
 
 module.exports = {
 	register,
@@ -179,4 +211,6 @@ module.exports = {
 	getCurrent,
 	patchSubscription,
 	patchAvatar,
+	verifyEmail,
+	resendVerificationEmail,
 };
